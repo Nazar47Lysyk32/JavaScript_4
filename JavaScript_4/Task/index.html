@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Генератор випадкових рядків</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Генератор випадкових рядків</h1>
+    <form id="stringForm">
+        <label for="length">Довжина рядка:</label>
+        <input type="number" id="length" name="length" min="1" max="100" required>
+
+        <label><input type="checkbox" name="chars" value="digits"> Цифри</label>
+        <label><input type="checkbox" name="chars" value="upperLetters"> Латинські літери у верхньому регістрі</label>
+        <label><input type="checkbox" name="chars" value="lowerLetters"> Латинські літери у нижньому регістрі</label>
+        
+        <button type="button" id="generate">Generate</button>
+    </form>
+    <textarea id="result" rows="4" cols="50" readonly></textarea>
+
+    <script>
+        $(document).ready(function() {
+            $('#generate').click(function() {
+                var length = $('#length').val();
+                var chars = [];
+                $('input[name="chars"]:checked').each(function() {
+                    chars.push($(this).val());
+                });
+                $('#result').val(generateRandomString(length, chars));
+            });
+
+            function generateRandomString(length, charTypes) {
+                var charSet = '';
+                if (charTypes.includes('digits')) {
+                    charSet += '0123456789';
+                }
+                if (charTypes.includes('upperLetters')) {
+                    charSet += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                }
+                if (charTypes.includes('lowerLetters')) {
+                    charSet += 'abcdefghijklmnopqrstuvwxyz';
+                }
+
+                var randomString = '';
+                for (var i = 0; i < length; i++) {
+                    var randomPos = Math.floor(Math.random() * charSet.length);
+                    randomString += charSet.charAt(randomPos);
+                }
+                return randomString;
+            }
+        });
+    </script>
+</body>
+</html>
